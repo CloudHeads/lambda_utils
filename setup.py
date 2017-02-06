@@ -20,7 +20,7 @@ test_requirements = [
 setup(
     name='lambda_utils',
     version='0.1.0',
-    description="A collection of AWS Lambda Utils and decorator for events e.g. API Gateway, S3, CloudFormation, CloudWatch",
+    description="A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api Gateway, S3, CloudFormation, CloudWatch ",
     long_description=readme + '\n\n' + history,
     author="Hans Christoph Schabert",
     author_email='christoph@schabert.me',

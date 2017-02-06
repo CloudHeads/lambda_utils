@@ -18,7 +18,7 @@ Lambda Utils
      :alt: Updates
 
 
-A collection of AWS Lambda Utils and decorator for events e.g. API Gateway, S3, CloudFormation, CloudWatch
+A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api Gateway, S3, CloudFormation, CloudWatch 
 
 
 * Free software: MIT license
