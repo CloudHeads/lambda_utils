@@ -10,7 +10,7 @@ Lambda Utils
         :target: https://travis-ci.org/Christoph-Schabert/lambda_utils
 
 .. image:: https://readthedocs.org/projects/lambda-utils/badge/?version=latest
-        :target: https://lambda-utils.readthedocs.io/en/latest/?badge=latest
+        :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/Christoph-Schabert/lambda_utils/shield.svg
@@ -22,7 +22,7 @@ A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api G
 
 
 * Free software: MIT license
-* Documentation: https://lambda-utils.readthedocs.io.
+* Documentation: https://lambda_utils.readthedocs.io.
 
 
 Features
