@@ -10,7 +10,6 @@ Tests for `lambda_utils` module.
 
 import pytest
 
-
 from lambda_utils import lambda_utils
 
 

@@ -29,7 +29,7 @@ setup(
         'lambda_utils',
     ],
     package_dir={'lambda_utils':
-                 'lambda_utils'},
+                     'lambda_utils'},
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
