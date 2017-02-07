@@ -4,13 +4,13 @@ Welcome to Lambda Utils's documentation!
 Contents:
 
 .. toctree::
-:maxdepth: 2
+   :maxdepth: 2
 
-       readme
-       installation
-       usage
-       contributing
-       authorshistory
+   readme
+   installation
+   usage
+   contributing
+   authorshistory
 
 Indices and tables
 ==================
