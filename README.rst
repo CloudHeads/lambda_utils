@@ -9,7 +9,7 @@ Lambda Utils
 .. image:: https://img.shields.io/travis/Christoph-Schabert/lambda_utils.svg
         :target: https://travis-ci.org/Christoph-Schabert/lambda_utils
 
-.. image:: https://readthedocs.org/projects/lambda-utils/badge/?version=latest
+.. image:: https://readthedocs.org/projects/lambda_utils/badge/?version=latest
         :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
