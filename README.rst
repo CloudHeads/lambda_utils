@@ -13,8 +13,8 @@ Lambda Utils
         :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/Christoph-Schabert/lambda_utils/shield.svg
-     :target: https://pyup.io/repos/github/Christoph-Schabert/lambda_utils/
+.. image:: https://pyup.io/repos/github/christoph-schabert/lambda_utils/shield.svg
+     :target: https://pyup.io/repos/github/christoph-schabert/lambda_utils/
      :alt: Updates
 
 
