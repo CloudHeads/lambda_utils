@@ -14,7 +14,7 @@ class Cloudformation(Event):
         self.event = dict(event)
         self.status = 'FAILED'
         self.response = None
-        self.reason = None
+        self.reason = context.aws_request_id
 
         try:
             self.response = self.function(event, context)
@@ -32,7 +32,7 @@ def send_signal(event, response_status, reason=None, response_data=None):
         {
             'Status': response_status,
             'Reason': reason,
-            'PhysicalResourceId': event['PhysicalResourceId'],
+            'PhysicalResourceId': event['LogicalResourceId'],
             'StackId': event['StackId'],
             'RequestId': event['RequestId'],
             'LogicalResourceId': event['LogicalResourceId'],
