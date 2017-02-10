@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 
@@ -26,7 +28,7 @@ def logical_resource_id(random_string):
 
 
 @pytest.fixture()
-def custom_resource_event(region, account_id, stack_id, stack_name, request_type, lambda_arn, lambda_name, unique_id, logical_resource_id):
+def custom_resource_event(request, region, account_id, stack_id, stack_name, request_type, lambda_arn, lambda_name, unique_id, logical_resource_id):
     return {
         'StackId': stack_id,
         'ResponseURL': 'https://cloudformation-custom-resource-response-euwest1.s3-eu-west-1.amazonaws.com/{stack_id}'.format(stack_id=stack_id),
@@ -39,4 +41,5 @@ def custom_resource_event(region, account_id, stack_id, stack_name, request_type
         'ResourceProperties': {
 
         }
+
     }

@@ -12,22 +12,27 @@ class Cloudformation(Event):
 
     def wrapped_function(self, event, context):
         self.event = dict(event)
+        if self.if_sns_event:
+            self.event = json.loads(event['Records'][0]['Sns']['Message'])
         self.status = 'FAILED'
         self.response = None
         self.reason = context.aws_request_id
 
         try:
-            self.response = self.function(event, context)
+            self.response = self.function(self.event, context)
             self.status = 'SUCCESS'
             return self.response
         except Exception as ex:
             self.reason = ex.message
             raise
         finally:
-            send_signal(event, self.status, self.reason, self.response)
+            send_signal(self.event, self.status, self.reason, self.response)
 
+    @property
+    def if_sns_event(self):
+        return 'Records' in self.event
 
-def send_signal(event, response_status, reason=None, response_data=None):
+def send_signal(event, response_status, reason, response_data=None):
     response_body = json.dumps(
         {
             'Status': response_status,
