@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Hans Christoph Schabert <christoph@schabert.me>
+* Christoph Schabert <christoph@schabert.me>
 
 Contributors
 ------------
