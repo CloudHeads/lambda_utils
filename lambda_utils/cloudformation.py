@@ -1,7 +1,7 @@
 import json
 import urllib2
 
-from . import Event
+from lambda_utils import Event
 
 
 class Cloudformation(Event):
@@ -31,6 +31,7 @@ class Cloudformation(Event):
     @property
     def if_sns_event(self):
         return 'Records' in self.event
+
 
 def send_signal(event, response_status, reason, response_data=None):
     response_body = json.dumps(

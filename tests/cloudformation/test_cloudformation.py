@@ -6,6 +6,7 @@ from mock import patch
 from lambda_utils import cloudformation as module
 from lambda_utils.cloudformation import Cloudformation, send_signal
 
+
 @pytest.fixture(params=['SNS', 'Lambda'])
 def event(request, custom_resource_event):
     if request.param == 'SNS':
@@ -45,7 +46,7 @@ def test_function_response(send_signal_mock, event, custom_resource_event, conte
 
 
 @patch.object(module, 'send_signal')
-def test_exception_raised(send_signal_mock, event, custom_resource_event,  context, random_string):
+def test_exception_raised(send_signal_mock, event, custom_resource_event, context, random_string):
     @Cloudformation()
     def function(event, context):
         raise Exception(random_string)
