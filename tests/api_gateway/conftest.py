@@ -15,6 +15,7 @@ def event():
             "CloudFront-Is-SmartTV-Viewer": "false",
             "CloudFront-Is-Tablet-Viewer": "false",
             "CloudFront-Viewer-Country": "DE",
+            "Content-Type": 'application/json',
             "DNT": "1",
             "Origin": "https://localhost",
             "Host": "some.execute-api.eu-west-1.amazonaws.com",

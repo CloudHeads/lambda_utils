@@ -17,6 +17,16 @@ def test_successful_response(event, context):
     assert result['statusCode'] == 200
     assert json.loads(result['body']) == event
 
+@pytest.mark.parametrize('body', [{}, None, '{}'])
+def test_content_type_application_json(event, context, body):
+    event['body'] = body
+    event['headers']['Content-Type'] = 'application/json'
+
+    result = function(event, context)
+
+    event['body'] = {}
+    assert json.loads(result['body']) == event
+
 
 def test_access_control_allow_origion_header_is_set(event, context):
     result = function(event, context)
