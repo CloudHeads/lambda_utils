@@ -95,21 +95,6 @@ class BadRequest(HTTPException):
     )
 
 
-class SecurityError(BadRequest):
-    """Raised if something triggers a security error.  This is otherwise
-    exactly like a bad request error.
-
-    .. versionadded:: 0.9
-    """
-
-
-class BadHost(BadRequest):
-    """Raised if the submitted host is badly formatted.
-
-    .. versionadded:: 0.11.2
-    """
-
-
 class Unauthorized(HTTPException):
     """*401* `Unauthorized`
 
