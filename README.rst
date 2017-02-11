@@ -4,19 +4,23 @@ Lambda Utils
 
 
 .. image:: https://img.shields.io/pypi/v/lambda_utils.svg
-        :target: https://pypi.python.org/pypi/lambda_utils
+    :target: https://pypi.python.org/pypi/lambda_utils
 
 .. image:: https://img.shields.io/travis/Christoph-Schabert/lambda_utils.svg
-        :target: https://travis-ci.org/Christoph-Schabert/lambda_utils
+    :target: https://travis-ci.org/Christoph-Schabert/lambda_utils
 
 .. image:: https://readthedocs.org/projects/lambda_utils/badge/?version=latest
-        :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+    :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 .. image:: https://pyup.io/repos/github/christoph-schabert/lambda_utils/shield.svg
      :target: https://pyup.io/repos/github/christoph-schabert/lambda_utils/
      :alt: Updates
 
+.. image:: https://coveralls.io/repos/github/Christoph-Schabert/lambda_utils/badge.svg?branch=master
+     :target: https://coveralls.io/github/Christoph-Schabert/lambda_utils?branch=master
+     :alt: Coverage Report
+    
 
 A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api Gateway, S3, CloudFormation, CloudWatch
 
