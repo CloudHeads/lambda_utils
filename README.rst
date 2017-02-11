@@ -17,9 +17,6 @@ Lambda Utils
      :target: https://pyup.io/repos/github/christoph-schabert/lambda_utils/
      :alt: Updates
 
-.. image:: https://coveralls.io/repos/github/Christoph-Schabert/lambda_utils/badge.svg?branch=master
-     :target: https://coveralls.io/github/Christoph-Schabert/lambda_utils?branch=master
-     :alt: Coverage Report
     
 
 A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api Gateway, S3, CloudFormation, CloudWatch
