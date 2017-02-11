@@ -15,6 +15,7 @@ class ApiGateway(Event):
         self.event = dict(event)
         self.headers = None
 
+        self.load_body_to_dict()
         try:
             self.body = self.function(self.event, context)
             self.code = 200
@@ -28,6 +29,10 @@ class ApiGateway(Event):
             self.code = 500
 
         return self.response()
+
+    def load_body_to_dict(self):
+        if self.event.get('headers', {}).get('Content-Type') == 'application/json':
+            self.event['body'] = json.loads(self.event.get('body') or '{}')
 
     def response(self):
         return {
@@ -49,4 +54,3 @@ class ApiGateway(Event):
             return {'Access-Control-Allow-Origin': "*"}
         else:
             return self.headers
-
