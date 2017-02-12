@@ -5,7 +5,8 @@ Credits
 Development Lead
 ----------------
 
-* Christoph Schabert <christoph@schabert.me>
+* Christoph Schabert <christoph@cloudheads.io>
+* Govinda Fichtnert <govinda@cloudheads.io>
 
 Contributors
 ------------

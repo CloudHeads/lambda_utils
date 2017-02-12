@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-__author__ = """Christoph Schabert"""
-__email__ = 'christoph@schabert.me'
+__author__ = """CloudHeads"""
+__email__ = 'theguys@cloudheads.io'
 __version__ = '0.1.11'
 
 

@@ -22,9 +22,9 @@ setup(
     version='0.1.11',
     description="A collection of AWS Lambda Utils / Decorator for different AWS events e.g. Api Gateway, S3, CloudFormation, CloudWatch ",
     long_description=readme + '\n\n' + history,
-    author="Hans Christoph Schabert",
-    author_email='christoph@schabert.me',
-    url='https://github.com/Christoph-Schabert/lambda_utils',
+    author="Cloudheads",
+    author_email='theguys@cloudheads.io',
+    url='https://github.com/CloudHeads/lambda_utils',
     packages=[
         'lambda_utils',
     ],
