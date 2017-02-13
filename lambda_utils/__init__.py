@@ -2,7 +2,7 @@
 
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
-__version__ = '0.1.15'
+__version__ = '0.1.16'
 
 
 class Event(object):
