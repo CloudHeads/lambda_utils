@@ -63,10 +63,11 @@ class HTTPException(Exception):
 
     code = None
 
-    def __init__(self, body=None, headers=None):
+    def __init__(self, body=None, headers=None, code=None):
         Exception.__init__(self)
         self.body = body or self.name
         self.headers = headers
+        self.code = code
 
     @property
     def name(self):
