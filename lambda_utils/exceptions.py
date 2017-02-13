@@ -67,7 +67,7 @@ class HTTPException(Exception):
         Exception.__init__(self)
         self.body = body or self.name
         self.headers = headers
-        self.code = code
+        self.code = code or self.code
 
     @property
     def name(self):
