@@ -42,7 +42,7 @@ def test_function_response(send_signal_mock, event, custom_resource_event, conte
 
     function(event, context)
 
-    send_signal_mock.assert_called_once_with(custom_resource_event, 'SUCCESS', context.aws_request_id, custom_resource_event)
+    send_signal_mock.assert_called_once_with(custom_resource_event, 'SUCCESS', None, custom_resource_event)
 
 
 @patch.object(module, 'send_signal')
