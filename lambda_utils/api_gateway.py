@@ -1,6 +1,6 @@
 import json
 import logging
-
+import urlparse
 from lambda_utils import Event
 from lambda_utils.exceptions import HTTPException, HTTP_STATUS_CODES
 
@@ -12,11 +12,13 @@ class ApiGateway(Event):
     body = None
 
     def wrapped_function(self, event, context):
+        logging.debug(event)
         self.event = dict(event)
         self.headers = None
 
         self.load_body_to_dict()
         try:
+            logging.info(event)
             self.body = self.function(self.event, context)
             self.code = 200
         except HTTPException as ex:
@@ -33,13 +35,18 @@ class ApiGateway(Event):
     def load_body_to_dict(self):
         if self.event.get('headers', {}).get('Content-Type') == 'application/json':
             self.event['body'] = json.loads(self.event.get('body') or '{}')
+        if self.event.get('headers', {}).get('Content-Type') == 'application/x-www-form-urlencoded':
+            body = self.event.get('body') or ""
+            self.event['body'] = urlparse.parse_qs(body, keep_blank_values=True)
 
     def response(self):
-        return {
+        result = {
             "statusCode": self.code,
             "body": self._body(),
             "headers": self._headers()
         }
+        logging.info(result)
+        return result
 
     def _body(self):
         if type(self.body) in [dict, list]:

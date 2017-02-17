@@ -17,6 +17,7 @@ def test_successful_response(event, context):
     assert result['statusCode'] == 200
     assert json.loads(result['body']) == event
 
+
 @pytest.mark.parametrize('body', [{}, None, '{}'])
 def test_content_type_application_json(event, context, body):
     event['body'] = body
@@ -26,6 +27,28 @@ def test_content_type_application_json(event, context, body):
 
     event['body'] = {}
     assert json.loads(result['body']) == event
+
+
+def test_content_type_application_x_www_form_urlencoded_empty(event, context):
+    event['body'] = None
+    event['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    result = function(event, context)
+
+    event['body'] = {}
+    assert json.loads(result['body']) == event
+
+
+def test_content_type_application_x_www_form_urlencoded(event, context):
+    event['body'] = 'string=a&empty&special=%21%40J%23%3ALOIJ'
+    event['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    result = function(event, context)
+
+    body = json.loads(result['body'])['body']
+    assert body['string'] == ['a']
+    assert body['empty'] == ['']
+    assert body['special'] == [u'!@J#:LOIJ']
 
 
 def test_access_control_allow_origion_header_is_set(event, context):
