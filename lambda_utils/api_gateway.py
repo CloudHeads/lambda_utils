@@ -32,10 +32,14 @@ class ApiGateway(Event):
 
         return self.response()
 
+    @property
+    def content_type(self):
+        return self.event.get('headers', {}).get('Content-Type')
+
     def load_body_to_dict(self):
-        if self.event.get('headers', {}).get('Content-Type') == 'application/json':
+        if self.content_type == 'application/json':
             self.event['body'] = json.loads(self.event.get('body') or '{}')
-        if self.event.get('headers', {}).get('Content-Type') == 'application/x-www-form-urlencoded':
+        if self.content_type == 'application/x-www-form-urlencoded':
             body = self.event.get('body') or ""
             self.event['body'] = urlparse.parse_qs(body, keep_blank_values=True)
 
@@ -49,7 +53,7 @@ class ApiGateway(Event):
         return result
 
     def _body(self):
-        if type(self.body) in [dict, list]:
+        if type(self.body) in [dict, list] and self.content_type == 'application/json':
             return json.dumps(self.body, sort_keys=True, indent=4, separators=(',', ': '))
         elif self.body is None:
             return {}
