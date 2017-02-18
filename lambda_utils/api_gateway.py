@@ -12,7 +12,6 @@ class ApiGateway(Event):
     body = None
 
     def wrapped_function(self, event, context):
-        logging.debug(event)
         self.event = dict(event)
         self.headers = None
 
