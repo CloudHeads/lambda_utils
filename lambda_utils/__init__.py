@@ -3,7 +3,7 @@
 
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
-__version__ = '0.1.22'
+__version__ = '0.1.23'
 import os
 import logging
 
