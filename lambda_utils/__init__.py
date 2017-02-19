@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
 __version__ = '0.1.21'
@@ -13,15 +14,15 @@ class Event(object):
 
     @staticmethod
     def configure_logging():
-
         log_level = logging.INFO
         if os.environ.get('DEBUG', 'true').lower() == 'false':
             log_level = logging.ERROR
         logging.getLogger().setLevel(log_level)
         if os.environ.get('SENTRY_IO'):
             from raven.handlers.logging import SentryHandler
+            from raven.transport.requests import RequestsHTTPTransport
             from raven.conf import setup_logging
-            handler = SentryHandler(os.environ.get('SENTRY_IO'), level=logging.ERROR)
+            handler = SentryHandler(os.environ.get('SENTRY_IO'), transport=RequestsHTTPTransport, level=logging.ERROR)
             setup_logging(handler)
 
     def __call__(self, function):
