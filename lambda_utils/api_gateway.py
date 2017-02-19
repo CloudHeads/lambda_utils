@@ -52,7 +52,7 @@ class ApiGateway(Event):
         return result
 
     def _body(self):
-        if type(self.body) in [dict, list] and self.content_type == 'application/json':
+        if type(self.body) in [dict, list]:
             return json.dumps(self.body, sort_keys=True, indent=4, separators=(',', ': '))
         elif self.body is None:
             return {}

@@ -36,7 +36,7 @@ def test_content_type_application_x_www_form_urlencoded_empty(event, context):
     result = function(event, context)
 
     event['body'] = {}
-    assert result['body'] == event
+    assert json.loads(result['body']) == event
 
 
 def test_content_type_application_x_www_form_urlencoded(event, context):
@@ -45,7 +45,7 @@ def test_content_type_application_x_www_form_urlencoded(event, context):
 
     result = function(event, context)
 
-    body = result['body']['body']
+    body = json.loads(result['body'])['body']
     assert body['string'] == ['a']
     assert body['empty'] == ['']
     assert body['special'] == [u'!@J#:LOIJ']
