@@ -38,7 +38,7 @@ def send_signal(event, response_status, reason, response_data=None):
         {
             'Status': response_status,
             'Reason': reason or 'ReasonCanNotBeNone',
-            'PhysicalResourceId': event['LogicalResourceId'],
+            'PhysicalResourceId': event.get('PhysicalResourceId', event['LogicalResourceId']),
             'StackId': event['StackId'],
             'RequestId': event['RequestId'],
             'LogicalResourceId': event['LogicalResourceId'],
