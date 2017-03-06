@@ -1,7 +1,9 @@
 import json
 import urllib2
 
-from lambda_utils import Event
+
+
+from lambda_utils import Event, logging
 
 
 class Cloudformation(Event):
@@ -11,6 +13,7 @@ class Cloudformation(Event):
     reason = None
 
     def wrapped_function(self, event, context):
+        logging.info(event)
         self.event = self.extract_event(event)
         self.status = 'FAILED'
         self.response = None
@@ -45,7 +48,7 @@ def send_signal(event, response_status, reason, response_data=None):
             'Data': response_data or {}
         }
     )
-
+    logging.info(response_body)
     opener = urllib2.build_opener(urllib2.HTTPHandler)
     request = urllib2.Request(event['ResponseURL'], data=response_body)
     request.add_header('Content-Type', '')
