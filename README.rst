@@ -13,8 +13,8 @@ Lambda Utils
     :target: https://lambda_utils.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/cloudheads/lambda_utils/shield.svg
-     :target: https://pyup.io/repos/github/cloudheads/lambda_utils/
+.. image:: https://pyup.io/repos/github/CloudHeads/lambda_utils/shield.svg
+     :target: https://pyup.io/repos/github/CloudHeads/lambda_utils/
      :alt: Updates
 
 
