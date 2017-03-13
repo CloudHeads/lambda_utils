@@ -23,6 +23,7 @@ class Cloudformation(Event):
             self.status = 'SUCCESS'
             return self.response
         except Exception as ex:
+            logging.exception(ex.message)
             self.reason = ex.message
             raise
         finally:
@@ -40,7 +41,7 @@ def send_signal(event, response_status, reason, response_data=None):
     response_body = json.dumps(
         {
             'Status': response_status,
-            'Reason': reason or 'ReasonCanNotBeNone',
+            'Reason': str(reason or 'ReasonCanNotBeNone'),
             'PhysicalResourceId': event.get('PhysicalResourceId', event['LogicalResourceId']),
             'StackId': event['StackId'],
             'RequestId': event['RequestId'],

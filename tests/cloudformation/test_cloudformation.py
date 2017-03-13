@@ -63,3 +63,10 @@ def test_send_signal(build_opener, custom_resource_event, random_string):
 
     build_opener.assert_called_once_with(module.urllib2.HTTPHandler)
     build_opener.return_value.open.assert_called_once()
+
+@patch.object(module.urllib2, 'build_opener')
+def test_send_signal_non_serializable_reason(build_opener, custom_resource_event, random_string):
+    send_signal(custom_resource_event, 'SUCCESS', object())
+
+    build_opener.assert_called_once_with(module.urllib2.HTTPHandler)
+    build_opener.return_value.open.assert_called_once()
