@@ -36,9 +36,9 @@ class ApiGateway(Event):
         return self.event.get('headers', {}).get('Content-Type')
 
     def load_body_to_dict(self):
-        if self.content_type == 'application/json':
+        if 'application/json' in self.content_type:
             self.event['body'] = json.loads(self.event.get('body') or '{}')
-        if self.content_type == 'application/x-www-form-urlencoded':
+        if 'application/x-www-form-urlencoded' in self.content_type:
             body = self.event.get('body') or ""
             self.event['body'] = urlparse.parse_qs(body, keep_blank_values=True)
 
