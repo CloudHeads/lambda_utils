@@ -28,6 +28,17 @@ def test_content_type_application_json(event, context, body):
     event['body'] = {}
     assert json.loads(result['body']) == event
 
+@pytest.mark.parametrize('body', [{}, None, '{}'])
+def test_content_type_application_json_and_charset(event, context, body):
+    event['body'] = body
+    event['headers']['Content-Type'] = 'application/json; charset=utf-8;'
+
+    result = function(event, context)
+
+    event['body'] = {}
+    assert json.loads(result['body']) == event
+
+
 
 def test_content_type_application_x_www_form_urlencoded_empty(event, context):
     event['body'] = None
