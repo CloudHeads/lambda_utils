@@ -11,6 +11,7 @@ def function(event, context):
     return event
 
 
+
 def test_successful_response(event, context):
     result = function(event, context)
 
@@ -27,6 +28,15 @@ def test_content_type_application_json(event, context, body):
 
     event['body'] = {}
     assert json.loads(result['body']) == event
+
+@pytest.mark.parametrize('body', [{}, None, '{}'])
+def test_content_type_missing(event, context, body):
+    event['body'] = body
+    del event['headers']['Content-Type']
+
+    result = function(event, context)
+
+    assert json.loads(result['body'])['body'] == body
 
 @pytest.mark.parametrize('body', [{}, None, '{}'])
 def test_content_type_application_json_and_charset(event, context, body):

@@ -33,7 +33,7 @@ class ApiGateway(Event):
 
     @property
     def content_type(self):
-        return self.event.get('headers', {}).get('Content-Type')
+        return self.event.get('headers', {}).get('Content-Type', '')
 
     def load_body_to_dict(self):
         if 'application/json' in self.content_type:
