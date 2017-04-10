@@ -77,6 +77,16 @@ def test_access_control_allow_origion_header_is_set(event, context):
 
     assert result['headers']['Access-Control-Allow-Origin'] == "*"
 
+@pytest.mark.parametrize('key', ['Content-Type', 'content-type'])
+def test_content_type_is_case_insetive(event, context,key):
+    event['body'] = '{}'
+    event['headers'] = { key : 'application/json'}
+
+    result = function(event, context)
+
+    assert json.loads(result['body'])['body'] == {}
+
+
 
 @pytest.mark.parametrize('exception', [
     BadRequest, Unauthorized, Forbidden, NotFound, MethodNotAllowed, NotAcceptable, RequestTimeout, Conflict, Gone, LengthRequired, PreconditionFailed,
