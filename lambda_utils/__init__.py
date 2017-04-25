@@ -1,37 +1,54 @@
 # -*- coding: utf-8 -*-
-
-
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
 __version__ = '0.1.29'
-import os
-import logging
+
+import json
+import urlparse
 
 
-class Event(object):
-    function = None
-    wrapped_function = None
+def extract_body(event):
+    def content_type():
+        headers = event.get('headers', {})
+        for key in ['Content-Type', 'content-type']:
+            if key in headers:
+                return headers[key]
+        return ''
 
-    @staticmethod
-    def configure_logging():
-        log_level = logging.INFO
-        if os.environ.get('DEBUG', 'true').lower() == 'false':
-            log_level = logging.ERROR
-        logging.getLogger().setLevel(log_level)
-        if os.environ.get('SENTRY_IO'):
-            from raven.handlers.logging import SentryHandler
-            from raven.transport.requests import RequestsHTTPTransport
-            from raven.conf import setup_logging
-            handler = SentryHandler(os.environ.get('SENTRY_IO'), transport=RequestsHTTPTransport, level=logging.ERROR)
-            setup_logging(handler)
+    body = None
 
-    def __call__(self, function):
-        self.configure_logging()
-        self.function = function
-        return self.wrapped_function
+    if 'application/json' in content_type():
+        body = json.loads(event.get('body', '{}'))
 
-    def wrapped_function(self, event, context):
-        logging.info(event)
-        response = self.function(event, context)
-        logging.info(response)
-        return response
+    if 'application/x-www-form-urlencoded' in content_type():
+        body = urlparse.parse_qs(event.get('body', ''), keep_blank_values=True)
+
+    return body
+
+
+def http_response(body, status=200, headers=None):
+    default_headers = {'Access-Control-Allow-Origin': '*'}
+
+    if headers:
+        merged_headers = default_headers.copy()
+        merged_headers.update(headers)
+        headers = merged_headers
+    else:
+        headers = default_headers
+
+    return {
+        'statusCode': status,
+        'body': body,
+        'headers': headers
+    }
+
+
+def json_http_response(body, status=200, headers=None):
+    json_body = json.dumps(body, sort_keys=True, indent=4, separators=(',', ': '))
+
+    return http_response(json_body, status, headers)
+
+
+def redirect_to(url, status=302):
+    return http_response('', status=status, headers={'Location': url})
+
