@@ -1,22 +1,20 @@
+# -*- coding: utf-8 -*-
 import json
 import urllib2
+import logging
 
 
-
-from lambda_utils import Event, logging
-
-
-class Cloudformation(Event):
-    event = None
-    status = None
-    response = None
-    reason = None
+class Cloudformation(object):
+    def __call__(self, function):
+        self.function = function
+        return self.wrapped_function
 
     def wrapped_function(self, event, context):
         logging.info(event)
         self.event = self.extract_event(event)
         self.status = 'FAILED'
         self.response = None
+        self.reason = None
 
         try:
             self.response = self.function(self.event, context)
