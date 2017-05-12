@@ -29,10 +29,10 @@ class SentryExceptionLogger(Logger):
             if os.environ.has_key('_X_AMZN_TRACE_ID'):
                 self.client.tags_context({'X-Amzn-Trace-Id': os.environ['_X_AMZN_TRACE_ID']})
 
-            request_trace_id = event[u'headers'][u'X-Amzn-Trace-Id']
+            request_trace_id = event['headers']['X-Amzn-Trace-Id']
             for trace_id in request_trace_id.split(';'):
                 if 'Root' in trace_id or 'root' in trace_id:
-                    self.client.tags_context({'Request-X-Amzn-Trace-Id': trace_id})
+                    self.client.tags_context({os.environ.get('SourceTraceId', 'Request-X-Amzn-Trace-Id'): trace_id})
         except:
             logging.debug("No request x-ray-trace-id recognized in event[u'headers'][u'X-Amzn-Trace-Id']")
 
