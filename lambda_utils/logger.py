@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import os
 import logging
 import threading
@@ -16,8 +15,8 @@ class Logger(object):
         return self.wrapped_function
 
     def wrapped_function(self, event, context):
+        timeout_notification = self.add_logging_on_timeout(context)
         try:
-            timeout_notification = self.add_logging_on_timeout(context)
             logging.debug(event)
             response = self.function(event, context)
             logging.debug(response)
@@ -29,14 +28,10 @@ class Logger(object):
             if timeout_notification: timeout_notification.cancel()
 
     def add_logging_on_timeout(self, context):
-        try:
-            timer = threading.Timer((context.get_remaining_time_in_millis() / 1000.00) - 0.5, timeout)
+        if hasattr(context, 'get_remaining_time_in_millis'):
+            seconds = (context.get_remaining_time_in_millis() / 1000.00) - 0.5
+            timer = threading.Timer(seconds, logging.error, args=["Execution is about to timeout."])
             timer.start()
             return timer
-
-        except AttributeError as ex:
-            logging.debug('Add Timeout notification failed. context.get_remaining_time_in_millis() missing?')
-
-
-def timeout():
-    logging.error("Execution is about to timeout.")
+        else:
+            logging.debug('Add logging on timeout failed. context.get_remaining_time_in_millis() missing?')
