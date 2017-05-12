@@ -16,6 +16,10 @@ class Logger(object):
 
     def wrapped_function(self, event, context):
         logging.debug(event)
-        response = self.function(event, context)
+        try:
+            response = self.function(event, context)
+        except Exception as ex:
+            logging.exception(ex.message)
+            raise
         logging.debug(response)
         return response
