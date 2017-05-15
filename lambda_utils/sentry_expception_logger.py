@@ -36,6 +36,11 @@ class SentryExceptionLogger(Logger):
         except:
             logging.debug("No request x-ray-trace-id recognized in event[u'headers'][u'X-Amzn-Trace-Id']")
 
+    def timeout(self, event, context):
+        self.add_user_context(event)
+        self.add_user_context(event)
+        Logger.timeout(self, event, context, extra={'stack': True, 'data': event})
+
     def wrapped_function(self, event, context):
         self.add_user_context(event)
         self.add_x_ray_tags(event)

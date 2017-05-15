@@ -15,7 +15,7 @@ class Logger(object):
         return self.wrapped_function
 
     def wrapped_function(self, event, context):
-        timeout_notification = self.add_logging_on_timeout(context)
+        timeout_notification = self.add_logging_on_timeout(event, context)
         try:
             logging.debug(event)
             response = self.function(event, context)
@@ -27,10 +27,13 @@ class Logger(object):
         finally:
             if timeout_notification: timeout_notification.cancel()
 
-    def add_logging_on_timeout(self, context):
+    def timeout(self, event, context, **kwargs):
+        logging.error('Execution is about to timeout.', **kwargs)
+
+    def add_logging_on_timeout(self, event, context):
         if hasattr(context, 'get_remaining_time_in_millis'):
             seconds = (context.get_remaining_time_in_millis() / 1000.00) - 0.5
-            timer = threading.Timer(seconds, logging.error, args=["Execution is about to timeout."])
+            timer = threading.Timer(seconds, self.timeout, args=[event, context])
             timer.start()
             return timer
         else:
