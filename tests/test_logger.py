@@ -1,19 +1,10 @@
-from time import sleep
-
-from pytest import fixture
 import os
 import logging
+from time import sleep
 from mock import patch
 from lambda_utils.logger import Logger
 from hamcrest import assert_that, equal_to
-
-
-class Context:
-    def __init__(self, milliseconds=None):
-        self.milliseconds = milliseconds or 6000
-
-    def get_remaining_time_in_millis(self):
-        return self.milliseconds
+from tests.conftest import Context
 
 
 class TestLogger:

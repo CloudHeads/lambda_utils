@@ -46,41 +46,12 @@ def lambda_name():
 
 @pytest.fixture()
 def lambda_arn(region, account_id, lambda_name):
-    'arn:aws:lambda:{region}:{account_id}:{lambda_name}'.format(
-        region=region,
-        account_id=account_id,
-        lambda_name=lambda_name
-    )
+    'arn:aws:lambda:{region}:{account_id}:{lambda_name}'.format(region=region, account_id=account_id, lambda_name=lambda_name)
 
 
-@pytest.fixture
-def context(test_name, unique_id, lambda_name):
-    class LambdaContext(object):
-        def __init__(self, version='LATEST'):
-            self.version = version
+class Context:
+    def __init__(self, milliseconds=None):
+        self.milliseconds = milliseconds or 6000
 
-        @property
-        def get_remaining_time_in_millis(self):
-            return 10000
-
-        @property
-        def function_name(self):
-            return test_name
-
-        @property
-        def function_version(self):
-            return self.version
-
-        @property
-        def invoked_function_arn(self):
-            return 'arn:aws:lambda:serverless:' + lambda_name
-
-        @property
-        def memory_limit_in_mb(self):
-            return 128
-
-        @property
-        def aws_request_id(self):
-            return unique_id
-
-    return LambdaContext()
+    def get_remaining_time_in_millis(self):
+        return self.milliseconds
