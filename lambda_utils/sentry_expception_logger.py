@@ -38,7 +38,7 @@ class SentryExceptionLogger(Logger):
 
     def timeout_notification(self, event, context):
         self.add_user_context(event)
-        self.add_user_context(event)
+        self.add_x_ray_tags(event)
         Logger.timeout_notification(self, event, context, extra={'stack': True, 'data': event})
 
     def wrapped_function(self, event, context):
