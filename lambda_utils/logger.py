@@ -27,13 +27,13 @@ class Logger(object):
         finally:
             if timeout_notification: timeout_notification.cancel()
 
-    def timeout(self, event, context, **kwargs):
+    def timeout_notification(self, event, context, **kwargs):
         logging.error('Execution is about to timeout.', **kwargs)
 
     def add_logging_on_timeout(self, event, context):
         if hasattr(context, 'get_remaining_time_in_millis'):
             seconds = (context.get_remaining_time_in_millis() / 1000.00) - 0.5
-            timer = threading.Timer(seconds, self.timeout, args=[event, context])
+            timer = threading.Timer(seconds, self.timeout_notification, args=[event, context])
             timer.start()
             return timer
         else:
