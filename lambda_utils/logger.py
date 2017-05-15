@@ -15,7 +15,7 @@ class Logger(object):
         return self.wrapped_function
 
     def wrapped_function(self, event, context):
-        timeout_notification = self.add_logging_on_timeout(event, context)
+        timer = self.add_logging_on_timeout(event, context)
         try:
             logging.debug(event)
             response = self.function(event, context)
@@ -25,7 +25,7 @@ class Logger(object):
             logging.exception(ex.message)
             raise
         finally:
-            if timeout_notification: timeout_notification.cancel()
+            if timer: timer.cancel()
 
     def timeout_notification(self, event, context, **kwargs):
         logging.error('Execution is about to timeout.', **kwargs)
