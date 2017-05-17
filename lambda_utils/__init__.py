@@ -1,54 +1,55 @@
 # -*- coding: utf-8 -*-
-__author__ = """CloudHeads"""
-__email__ = 'theguys@cloudheads.io'
-__version__ = '0.2.1'
-
-import json
-import urlparse
+import logging
+from concurrent.futures import ThreadPoolExecutor
+from response_handlers import BaseResponseHandler
+from logger import BaseLogger
 
 
-def extract_body(event):
-    def content_type():
-        headers = event.get('headers', {})
-        for key in ['Content-Type', 'content-type']:
-            if key in headers:
-                return headers[key]
-        return ''
+class LambdaProcessor:
+    def __init__(self, response_handler=None, loggers=None):
+        if response_handler:
+            self.response_handler = response_handler()
+        else:
+            self.response_handler = BaseResponseHandler()
+        self.loggers = []
+        for logger in loggers or [BaseLogger]:
+            self.loggers.append(logger())
 
-    body = None
+    def on_call(self):
+        for logger in self.loggers:
+            logger.on_call()
 
-    if 'application/json' in content_type():
-        body = json.loads(event.get('body', '{}'))
+    def on_execution(self, event):
+        logging.debug(event)
 
-    if 'application/x-www-form-urlencoded' in content_type():
-        body = urlparse.parse_qs(event.get('body', ''), keep_blank_values=True)
+        for logger in self.loggers:
+            logger.on_execution(event)
 
-    return body
+    def on_response(self, response):
+        logging.debug(response)
+        return response
 
+    def on_exception(self, ex):
+        logging.exception(ex.message)
+        return self.response_handler.on_exception(ex)
 
-def http_response(body, status=200, headers=None):
-    default_headers = {'Access-Control-Allow-Origin': '*'}
+    def __call__(self, function):
+        self.on_call()
+        self.function = function
+        return self.wrapped_function
 
-    if headers:
-        merged_headers = default_headers.copy()
-        merged_headers.update(headers)
-        headers = merged_headers
-    else:
-        headers = default_headers
+    def seconds_until_timeout(self, context):
+        if hasattr(context, 'get_remaining_time_in_millis'):
+            seconds = (context.get_remaining_time_in_millis() / 1000.00) - 1.0
+            return seconds
+        else:
+            logging.debug('Add logging on timeout failed. context.get_remaining_time_in_millis() missing?')
 
-    return {
-        'statusCode': status,
-        'body': body,
-        'headers': headers
-    }
-
-
-def json_http_response(body, status=200, headers=None):
-    json_body = json.dumps(body, sort_keys=True, indent=4, separators=(',', ': '))
-
-    return http_response(json_body, status, headers)
-
-
-def redirect_to(url, status=302):
-    return http_response('', status=status, headers={'Location': url})
-
+    def wrapped_function(self, event, context):
+        try:
+            self.on_execution(event)
+            timer = ThreadPoolExecutor(max_workers=1).submit(self.function, event, context)
+            response = timer.result(timeout=self.seconds_until_timeout(context))
+            return self.on_response(response)
+        except Exception as ex:
+            return self.on_exception(ex)
