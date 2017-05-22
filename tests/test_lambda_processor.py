@@ -85,6 +85,13 @@ class TestOnFunctions:
         for logger in loggers:
             logger.return_value.on_execution.assert_called_once_with(event)
 
+    def test_on_execution_triggers_response_handler(self, event):
+        response_handler = MagicMock()
+
+        LambdaProcessor(response_handler=response_handler).on_execution(event)
+
+        response_handler.on_execution_assert_called_once_with(event)
+
     @patch.object(logging, 'debug')
     def test_on_execution_logging_event(self, debug_mock, event):
         LambdaProcessor().on_execution(event)

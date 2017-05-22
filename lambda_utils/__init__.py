@@ -24,6 +24,7 @@ class LambdaProcessor:
 
         for logger in self.loggers:
             logger.on_execution(event)
+        return self.response_handler.on_execution(event)
 
     def on_response(self, response):
         logging.debug(response)
@@ -47,7 +48,7 @@ class LambdaProcessor:
 
     def wrapped_function(self, event, context):
         try:
-            self.on_execution(event)
+            event = self.on_execution(event)
             timer = ThreadPoolExecutor(max_workers=1).submit(self.function, event, context)
             response = timer.result(timeout=self.seconds_until_timeout(context))
             return self.on_response(response)
