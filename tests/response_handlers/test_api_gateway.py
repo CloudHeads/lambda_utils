@@ -1,5 +1,21 @@
-from lambda_utils import extract_body, http_response, json_http_response, redirect_to
-from hamcrest import assert_that, equal_to, has_entry
+from hamcrest import equal_to, assert_that, has_entry
+
+from lambda_utils.response_handlers.api_gateway import ApiGateway, extract_body, http_response, json_http_response, redirect_to
+from concurrent.futures import TimeoutError
+
+
+class TestApiGateway:
+    def test_on_timeout_exception(self):
+        result = ApiGateway().on_exception(ex=TimeoutError())
+
+        assert_that(result['statusCode'], equal_to(504))
+        assert_that(result['body'], equal_to('Execution is about to timeout.'))
+
+    def test_on_unexpected_exception(self):
+        result = ApiGateway().on_exception(ex=Exception())
+
+        assert_that(result['statusCode'], equal_to(500))
+        assert_that(result['body'], equal_to('Internal Server Error'))
 
 
 class TestExtractBody:
@@ -9,14 +25,12 @@ class TestExtractBody:
         assert_that(result, equal_to(None))
 
     def test_recognizes_content_type_header_in_lower_case(self):
-        result = extract_body({'headers': {'content-type': 'application/json'},
-                               'body': '{"foo":"bar"}'})
+        result = extract_body({'headers': {'content-type': 'application/json'}, 'body': '{"foo":"bar"}'})
 
         assert_that(result, equal_to({'foo': 'bar'}))
 
     def test_recognizes_content_type_header_in_upper_case(self):
-        result = extract_body({'headers': {'Content-Type': 'application/json'},
-                               'body': '{"foo":"bar"}'})
+        result = extract_body({'headers': {'Content-Type': 'application/json'}, 'body': '{"foo":"bar"}'})
 
         assert_that(result, equal_to({'foo': 'bar'}))
 
@@ -31,14 +45,12 @@ class TestExtractBody:
         assert_that(result, equal_to({}))
 
     def test_returns_dict_for_valid_json_body(self):
-        result = extract_body({'headers': {'Content-Type': 'application/json'},
-                               'body': '{"foo":"bar"}'})
+        result = extract_body({'headers': {'Content-Type': 'application/json'}, 'body': '{"foo":"bar"}'})
 
         assert_that(result, equal_to({'foo': 'bar'}))
 
     def test_returns_dict_for_valid_x_www_form_urlencoded_body(self):
-        result = extract_body({'headers': {'Content-Type': 'application/x-www-form-urlencoded'},
-                               'body':'string=a&empty&special=%21%40J%23%3ALOIJ'})
+        result = extract_body({'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'body': 'string=a&empty&special=%21%40J%23%3ALOIJ'})
 
         assert_that(result['string'], equal_to(['a']))
         assert_that(result['empty'], equal_to(['']))
@@ -104,4 +116,3 @@ class TestRedirectTo:
 
         assert_that(result['statusCode'], equal_to(301))
         assert_that(result, has_entry('headers', {'Access-Control-Allow-Origin': '*', 'Location': 'http://foo.com'}))
-
