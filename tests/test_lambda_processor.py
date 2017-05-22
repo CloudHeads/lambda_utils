@@ -30,7 +30,7 @@ class TestWrappedFunction:
         def function(event, context):
             pass
 
-        function(event, Context(600))
+        function(event, None)
 
         on_execution_mock.assert_called_once_with(event)
 
@@ -40,7 +40,7 @@ class TestWrappedFunction:
         def function(event, context):
             return response
 
-        result = function(None, Context(600))
+        result = function(None, None)
 
         assert_that(result, equal_to(on_response_mock.return_value))
         on_response_mock.assert_called_once_with(response)
@@ -62,7 +62,7 @@ class TestWrappedFunction:
         def function(event, context):
             raise Exception('SomeException')
 
-        result = function(None, Context(600))
+        result = function(None, None)
 
         assert_that(result, equal_to(on_exception_mock.return_value))
         on_exception_mock.assert_called_once()
@@ -119,7 +119,7 @@ class TestOnFunctions:
             raise exception
 
         with pytest.raises(Exception) as ex:
-            function(None, Context(600))
+            function(None, None)
 
         assert_that(ex.value, equal_to(exception))
 
@@ -129,7 +129,7 @@ class TestOnFunctions:
         def function(event, context):
             raise exception
 
-        result = function(None, Context(1000))
+        result = function(None, None)
 
         assert_that(result, equal_to(on_exception_mock.return_value))
         on_exception_mock.assert_called_once_with(exception)
