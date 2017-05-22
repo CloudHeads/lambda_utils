@@ -1,4 +1,4 @@
-from . import BaseResponseHandler
+from lambda_utils.response_handlers import BaseResponseHandler
 from concurrent.futures import TimeoutError
 import json
 import urlparse

@@ -119,7 +119,7 @@ class TestOnFunctions:
         def function(event, context):
             raise exception
 
-        result = function(None, Context(600))
+        result = function(None, Context(1000))
 
         assert_that(result, equal_to(on_exception_mock.return_value))
         on_exception_mock.assert_called_once_with(exception)
