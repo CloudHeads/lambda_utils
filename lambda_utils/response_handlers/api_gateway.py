@@ -5,6 +5,9 @@ import urlparse
 
 
 class ApiGateway(BaseResponseHandler):
+    def on_execution(self, event):
+        return extract_body(event)
+
     def on_exception(self, ex):
         if type(ex) == TimeoutError:
             return http_response("Execution is about to timeout.", status=504)

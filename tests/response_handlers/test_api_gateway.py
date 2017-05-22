@@ -1,10 +1,20 @@
 from hamcrest import equal_to, assert_that, has_entry
-
+from mock import patch
+from lambda_utils.response_handlers import api_gateway as module
 from lambda_utils.response_handlers.api_gateway import ApiGateway, extract_body, http_response, json_http_response, redirect_to
 from concurrent.futures import TimeoutError
 
 
 class TestApiGateway:
+    @patch.object(module, 'extract_body')
+    def test_on_execution_calls_extract_body(self, extract_body_mock):
+        event = {'some': 'event'}
+
+        result = ApiGateway().on_execution(event)
+
+        extract_body_mock.assert_called_once_with(event)
+        assert_that(result, equal_to(extract_body_mock.return_value))
+
     def test_on_timeout_exception(self):
         result = ApiGateway().on_exception(ex=TimeoutError())
 
