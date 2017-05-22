@@ -13,7 +13,7 @@ class TestApiGateway:
         result = ApiGateway().on_execution(event)
 
         extract_body_mock.assert_called_once_with(event)
-        assert_that(result, equal_to(extract_body_mock.return_value))
+        assert_that(result, equal_to({'body': extract_body_mock.return_value, 'some': 'event'}))
 
     def test_on_timeout_exception(self):
         result = ApiGateway().on_exception(ex=TimeoutError())
