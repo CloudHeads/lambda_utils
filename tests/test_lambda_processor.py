@@ -75,7 +75,7 @@ class TestOnFunctions:
         LambdaProcessor(loggers=loggers).on_call()
 
         for logger in loggers:
-            logger.return_value.on_call.assert_called_once_with()
+            logger.on_call.assert_called_once_with()
 
     def test_on_execution_triggers_loggers(self, event):
         loggers = [MagicMock(), MagicMock()]
@@ -83,7 +83,7 @@ class TestOnFunctions:
         LambdaProcessor(loggers=loggers).on_execution(event)
 
         for logger in loggers:
-            logger.return_value.on_execution.assert_called_once_with(event)
+            logger.on_execution.assert_called_once_with(event)
 
     def test_on_execution_triggers_response_handler(self, event):
         response_handler = MagicMock()

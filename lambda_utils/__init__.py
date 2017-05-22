@@ -7,13 +7,9 @@ from logger import BaseLogger
 
 class LambdaProcessor:
     def __init__(self, response_handler=None, loggers=None):
-        if response_handler:
-            self.response_handler = response_handler()
-        else:
-            self.response_handler = BaseResponseHandler()
-        self.loggers = []
-        for logger in loggers or [BaseLogger]:
-            self.loggers.append(logger())
+
+        self.response_handler = response_handler or BaseResponseHandler()
+        self.loggers = loggers or [BaseLogger()]
 
     def on_call(self):
         for logger in self.loggers:

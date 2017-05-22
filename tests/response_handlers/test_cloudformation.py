@@ -36,7 +36,7 @@ class TestCloudformation:
     def test_on_exception_failed_signal_is_send(self, send_signal_mock, event):
         exception = Exception('some_exception')
 
-        @LambdaProcessor(response_handler=Cloudformation)
+        @LambdaProcessor(response_handler=Cloudformation())
         def function(event, context):
             raise exception
 
