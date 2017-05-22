@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -25,9 +25,7 @@ setup(
     author="Cloudheads",
     author_email='theguys@cloudheads.io',
     url='https://github.com/CloudHeads/lambda_utils',
-    packages=[
-        'lambda_utils',
-    ],
+    packages=find_packages(exclude=['tests']),
     package_dir={'lambda_utils': 'lambda_utils'},
     include_package_data=True,
     install_requires=requirements,
