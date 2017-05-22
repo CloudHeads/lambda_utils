@@ -28,7 +28,7 @@ class LambdaProcessor:
 
     def on_response(self, response):
         logging.debug(response)
-        return response
+        return self.response_handler.on_response(response)
 
     def on_exception(self, ex):
         logging.exception(ex.message)
