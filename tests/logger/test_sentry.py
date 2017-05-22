@@ -25,7 +25,7 @@ class TestSentry:
     @patch.dict(os.environ, {'SENTRY_IO': 'https://some:dsn@app.getsentry.com/123', 'AWS_LAMBDA_FUNCTION_NAME': "some_name"})
     def test_on_call_initialize_sentry_as_logger(self):
         sentry = Sentry()
-        sentry.on_call()
+        sentry.on_init(lambda x: x)
 
         assert_that(len(logging.getLogger('raven').handlers), equal_to(1))
         assert_that(sentry.client.name, equal_to('some_name'))

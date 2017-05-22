@@ -11,9 +11,9 @@ class LambdaProcessor:
         self.response_handler = response_handler or BaseResponseHandler()
         self.loggers = loggers or [BaseLogger()]
 
-    def on_call(self):
+    def on_init(self, function):
         for logger in self.loggers:
-            logger.on_call()
+            logger.on_init(function)
 
     def on_execution(self, event):
         logging.debug(event)
@@ -31,7 +31,7 @@ class LambdaProcessor:
         return self.response_handler.on_exception(ex)
 
     def __call__(self, function):
-        self.on_call()
+        self.on_init(function)
         self.function = function
         return self.wrapped_function
 

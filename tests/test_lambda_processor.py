@@ -69,13 +69,14 @@ class TestWrappedFunction:
 
 
 class TestOnFunctions:
-    def test_on_call_triggers_loggers(self):
+    def test_on_init_triggers_loggers(self):
         loggers = [MagicMock(), MagicMock()]
+        function = lambda event, context: event
 
-        LambdaProcessor(loggers=loggers).on_call()
+        LambdaProcessor(loggers=loggers).on_init(function)
 
         for logger in loggers:
-            logger.on_call.assert_called_once_with()
+            logger.on_init.assert_called_once_with(function)
 
     def test_on_execution_triggers_loggers(self, event):
         loggers = [MagicMock(), MagicMock()]

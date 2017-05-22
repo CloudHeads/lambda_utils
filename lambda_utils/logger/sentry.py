@@ -10,10 +10,11 @@ from raven.conf import setup_logging
 class Sentry(BaseLogger):
     client = None
 
-    def on_call(self):
+    def on_init(self, function):
         self.client = Client(dsn=os.environ['SENTRY_IO'], transport=RequestsHTTPTransport, name=os.environ.get('AWS_LAMBDA_FUNCTION_NAME'))
         self.handler = SentryHandler(client=self.client, level=logging.ERROR)
         setup_logging(self.handler)
+        BaseLogger.on_init(self, function)
 
     def on_execution(self, event):
         self.add_user_context(event)
