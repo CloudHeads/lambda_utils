@@ -111,7 +111,9 @@ class TestOnFunctions:
         debug_mock.assert_called_once_with(response)
 
     @patch.object(logging, 'exception')
-    def test_on_exception_logging_exception(self, exception_mock, exception):
+    def test_on_exception_logging_exception(self, exception_mock):
+        exception = Exception('some_exception')
+
         @LambdaProcessor()
         def function(event, context):
             raise exception
