@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
-__version__ = '0.2.7'
+__version__ = '0.2.8'
 
 import logging
 from concurrent.futures import ThreadPoolExecutor
