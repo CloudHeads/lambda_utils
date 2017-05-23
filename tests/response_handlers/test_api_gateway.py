@@ -49,8 +49,18 @@ class TestExtractBody:
 
         assert_that(result, equal_to({}))
 
+    def test_returns_empty_dict_for_empty_body_with_json(self):
+        result = extract_body({'headers': {'Content-Type': 'application/json'}, 'body': None})
+
+        assert_that(result, equal_to({}))
+
     def test_returns_empty_dict_for_missing_body_with_x_www_form_urlencoded(self):
         result = extract_body({'headers': {'Content-Type': 'application/x-www-form-urlencoded'}})
+
+        assert_that(result, equal_to({}))
+
+    def test_returns_empty_dict_for_empty_body_with_x_www_form_urlencoded(self):
+        result = extract_body({'headers': {'Content-Type': 'application/x-www-form-urlencoded'}, 'body': None})
 
         assert_that(result, equal_to({}))
 

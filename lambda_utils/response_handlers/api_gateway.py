@@ -50,9 +50,9 @@ def extract_body(event):
     body = event.get('body')
 
     if 'application/json' in content_type():
-        body = json.loads(event.get('body', '{}'))
+        body = json.loads(event.get('body') or '{}')
 
     if 'application/x-www-form-urlencoded' in content_type():
-        body = urlparse.parse_qs(event.get('body', ''), keep_blank_values=True)
+        body = urlparse.parse_qs(event.get('body') or '', keep_blank_values=True)
 
     return body
