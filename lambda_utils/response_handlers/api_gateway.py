@@ -47,7 +47,7 @@ def extract_body(event):
                 return headers[key]
         return ''
 
-    body = None
+    body = event.get('body')
 
     if 'application/json' in content_type():
         body = json.loads(event.get('body', '{}'))
