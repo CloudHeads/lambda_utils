@@ -1,9 +1,11 @@
 language: python
-python: 2.7
+python: 3.6
 env:
   matrix:
-  - TOXENV=py27
-  - TOXENV=pypy
+    - TOXENV=py27
+    - TOXENV=pypy
+    - TOXENV=py36
+
 install: pip install -U tox
 script: tox -e ${TOXENV}
 deploy:

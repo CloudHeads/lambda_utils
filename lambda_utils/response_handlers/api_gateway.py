@@ -1,7 +1,10 @@
 from lambda_utils.response_handlers import BaseResponseHandler
 from concurrent.futures import TimeoutError
 import json
-import urlparse
+try:
+    from urllib.parse import parse_qs
+except ImportError:
+    from urlparse import parse_qs
 
 
 class ApiGateway(BaseResponseHandler):
@@ -53,6 +56,6 @@ def extract_body(event):
         body = json.loads(event.get('body') or '{}')
 
     if 'application/x-www-form-urlencoded' in content_type():
-        body = urlparse.parse_qs(event.get('body') or '', keep_blank_values=True)
+        body = parse_qs(event.get('body') or '', keep_blank_values=True)
 
     return body

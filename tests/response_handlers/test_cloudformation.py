@@ -44,20 +44,20 @@ class TestCloudformation:
             function(event, None)
 
         assert_that(ex.value, equal_to(exception))
-        send_signal_mock.assert_called_once_with(event, FAILED, exception.message)
+        send_signal_mock.assert_called_once_with(event, FAILED, "some_exception")
 
 
 class TestSendSignal:
-    @patch.object(module.urllib2, 'build_opener')
+    @patch.object(module, 'build_opener')
     def test_send_signal(self, build_opener, event):
         send_signal(event, 'SUCCESS', 'some_random_string')
 
-        build_opener.assert_called_once_with(module.urllib2.HTTPHandler)
+        build_opener.assert_called_once_with(module.HTTPHandler)
         build_opener.return_value.open.assert_called_once()
 
-    @patch.object(module.urllib2, 'build_opener')
+    @patch.object(module, 'build_opener')
     def test_send_signal_non_serializable_reason(self, build_opener, event):
         send_signal(event, 'SUCCESS', object())
 
-        build_opener.assert_called_once_with(module.urllib2.HTTPHandler)
+        build_opener.assert_called_once_with(module.HTTPHandler)
         build_opener.return_value.open.assert_called_once()
