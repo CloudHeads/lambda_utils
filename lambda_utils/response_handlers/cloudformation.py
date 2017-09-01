@@ -9,7 +9,10 @@ SUCCESS = 'SUCCESS'
 
 class Cloudformation(BaseResponseHandler):
     def on_execution(self, event):
-        self.event = event
+        try:
+            self.event = json.loads(event['Records'][0]['Sns']['Message'])
+        except:
+            self.event = event
         return BaseResponseHandler.on_execution(self, event)
 
     def on_exception(self, ex):
