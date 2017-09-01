@@ -69,7 +69,7 @@ class TestCloudformation:
         urllib2_mock.build_opener.return_value.open.assert_called_once()
         urllib2_mock.Request.assert_called_once_with(
             event['ResponseURL'],
-            data='{"Status": "FAILED", "StackId": "stack_id", "PhysicalResourceId": "stack_name-logical_resource_id", "Reason": "some_exception", "RequestId": "request_id", "Data": {}, "LogicalResourceId": "logical_resource_id"}'
+            data='{"Data": {}, "LogicalResourceId": "logical_resource_id", "PhysicalResourceId": "stack_name-logical_resource_id", "Reason": "some_exception", "RequestId": "request_id", "StackId": "stack_id", "Status": "FAILED"}'
         )
 
 
