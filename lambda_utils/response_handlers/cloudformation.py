@@ -13,7 +13,10 @@ SUCCESS = 'SUCCESS'
 
 class Cloudformation(BaseResponseHandler):
     def on_execution(self, event):
-        self.event = event
+        try:
+            self.event = json.loads(event['Records'][0]['Sns']['Message'])
+        except:
+            self.event = event
         return BaseResponseHandler.on_execution(self, event)
 
     def on_exception(self, ex):
@@ -22,15 +25,18 @@ class Cloudformation(BaseResponseHandler):
 
 
 def send_signal(event, response_status, reason, response_data=None):
-    response_body = json.dumps({
-        'Status': response_status,
-        'Reason': str(reason or 'ReasonCanNotBeNone'),
-        'PhysicalResourceId': event.get('PhysicalResourceId', event['LogicalResourceId']),
-        'StackId': event['StackId'],
-        'RequestId': event['RequestId'],
-        'LogicalResourceId': event['LogicalResourceId'],
-        'Data': response_data or {}
-    })
+    response_body = json.dumps(
+        {
+            'Status': response_status,
+            'Reason': str(reason or 'ReasonCanNotBeNone'),
+            'PhysicalResourceId': event.get('PhysicalResourceId', event['LogicalResourceId']),
+            'StackId': event['StackId'],
+            'RequestId': event['RequestId'],
+            'LogicalResourceId': event['LogicalResourceId'],
+            'Data': response_data or {}
+        },
+        sort_keys=True,
+    )
     logging.debug(response_body)
     opener = build_opener(HTTPHandler)
     request = Request(event['ResponseURL'], data=response_body)
