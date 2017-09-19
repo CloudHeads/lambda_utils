@@ -1,7 +1,10 @@
 import json
 import logging
-import urllib2
 
+try:
+    from urllib.request import build_opener, Request, HTTPHandler
+except ImportError:
+    from urllib2 import build_opener, Request, HTTPHandler
 from lambda_utils.response_handlers import BaseResponseHandler
 
 FAILED = 'FAILED'
@@ -17,8 +20,7 @@ class Cloudformation(BaseResponseHandler):
         return BaseResponseHandler.on_execution(self, event)
 
     def on_exception(self, ex):
-        logging.exception(ex.message)
-        send_signal(self.event, FAILED, ex.message)
+        send_signal(self.event, FAILED, str(ex))
         BaseResponseHandler.on_exception(self, ex)
 
 
@@ -36,8 +38,8 @@ def send_signal(event, response_status, reason, response_data=None):
         sort_keys=True,
     )
     logging.debug(response_body)
-    opener = urllib2.build_opener(urllib2.HTTPHandler)
-    request = urllib2.Request(event['ResponseURL'], data=response_body)
+    opener = build_opener(HTTPHandler)
+    request = Request(event['ResponseURL'], data=response_body)
     request.add_header('Content-Type', '')
     request.add_header('Content-Length', len(response_body))
     request.get_method = lambda: 'PUT'

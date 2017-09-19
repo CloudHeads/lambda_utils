@@ -1,10 +1,10 @@
-import json
-import logging
-import urlparse
-
-from concurrent.futures import TimeoutError
-
 from lambda_utils.response_handlers import BaseResponseHandler
+from concurrent.futures import TimeoutError
+import json
+try:
+    from urllib.parse import parse_qs
+except ImportError:
+    from urlparse import parse_qs
 
 
 class ApiGateway(BaseResponseHandler):
@@ -13,7 +13,6 @@ class ApiGateway(BaseResponseHandler):
         return event
 
     def on_exception(self, ex):
-        logging.exception(ex.message)
         if type(ex) == TimeoutError:
             return http_response("Execution is about to timeout.", status=504)
         else:
@@ -57,6 +56,6 @@ def extract_body(event):
         body = json.loads(event.get('body') or '{}')
 
     if 'application/x-www-form-urlencoded' in content_type():
-        body = urlparse.parse_qs(event.get('body') or '', keep_blank_values=True)
+        body = parse_qs(event.get('body') or '', keep_blank_values=True)
 
     return body
