@@ -4,7 +4,7 @@ from mock import patch
 
 from lambda_utils.response_handlers import api_gateway as module
 from lambda_utils.response_handlers.api_gateway import ApiGateway, extract_body, http_response, \
-    json_http_response, redirect_to, logging
+    json_http_response, logging, redirect_to
 
 
 class TestApiGateway:
@@ -18,7 +18,6 @@ class TestApiGateway:
         assert_that(result, equal_to({'body': extract_body_mock.return_value, 'some': 'event'}))
 
     def test_on_timeout_exception(self):
-
         result = ApiGateway().on_exception(ex=TimeoutError())
 
         assert_that(result['statusCode'], equal_to(504))

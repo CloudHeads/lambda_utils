@@ -2,7 +2,6 @@
 __author__ = """CloudHeads"""
 __email__ = 'theguys@cloudheads.io'
 __version__ = '0.2.10'
-import logging
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -40,8 +39,6 @@ class LambdaProcessor:
         if hasattr(context, 'get_remaining_time_in_millis'):
             seconds = (context.get_remaining_time_in_millis() / 1000.00) - 1.0
             return seconds
-        else:
-            logging.debug('Add logging on timeout failed. context.get_remaining_time_in_millis() missing?')
 
     def wrapped_function(self, event, context):
         try:

@@ -1,10 +1,12 @@
 import logging
-import pytest
 from time import sleep
-from mock import patch, MagicMock
+
+import pytest
 from hamcrest import assert_that, equal_to
+from mock import MagicMock, patch
 from pytest import fixture
-from lambda_utils import LambdaProcessor, BaseResponseHandler
+
+from lambda_utils import BaseResponseHandler, LambdaProcessor
 from tests.conftest import Context
 
 
@@ -146,7 +148,6 @@ class TestSecondsUntilTimeout:
 
     @patch.object(logging, 'debug')
     def test_returns_none(self, debug_mock):
-
         result = LambdaProcessor().seconds_until_timeout(None)
 
         assert_that(result, equal_to(None))

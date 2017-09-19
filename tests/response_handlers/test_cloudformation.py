@@ -7,7 +7,8 @@ from pytest import fixture
 
 from lambda_utils import LambdaProcessor
 from lambda_utils.response_handlers import cloudformation as module
-from lambda_utils.response_handlers.cloudformation import Cloudformation, FAILED, send_signal, logging
+from lambda_utils.response_handlers.cloudformation import Cloudformation, FAILED, logging, \
+    send_signal
 
 
 @fixture
@@ -40,12 +41,17 @@ class TestCloudformation:
         assert_that(cloudformation.event, equal_to(event))
 
     @patch.object(logging, 'exception')
-    def test_on_exception_calls_logging_exception(self, exception_mock):
-        ex = Exception()
+    def test_on_exception_calls_logging_exception(self, exception_mock, event):
+        exception = Exception()
 
-        Cloudformation().on_exception(ex=ex)
+        @LambdaProcessor(response_handler=Cloudformation())
+        def function(event, context):
+            raise exception
 
-        exception_mock.assert_called_once_with(ex.message)
+        with pytest.raises(Exception) as ex:
+            function(event, None)
+
+        exception_mock.assert_called_once_with(str(exception))
 
     @patch.object(module, 'send_signal')
     def test_on_exception_failed_signal_is_send(self, send_signal_mock, event):
