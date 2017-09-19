@@ -41,15 +41,15 @@ class TestCloudformation:
         assert_that(cloudformation.event, equal_to(event))
 
     @patch.object(logging, 'exception')
-    def test_on_exception_calls_logging_exception(self, exception_mock, event):
+    @patch.object(module, 'send_signal')
+    def test_on_exception_calls_logging_exception(self, send_signal_mock, exception_mock, event):
         exception = Exception()
 
         @LambdaProcessor(response_handler=Cloudformation())
         def function(event, context):
             raise exception
 
-        with pytest.raises(Exception) as ex:
-            function(event, None)
+        function(event, None)
 
         exception_mock.assert_called_once_with(str(exception))
 
