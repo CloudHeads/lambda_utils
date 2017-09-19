@@ -1,6 +1,7 @@
 import json
 import logging
 import urllib2
+
 from lambda_utils.response_handlers import BaseResponseHandler
 
 FAILED = 'FAILED'
@@ -16,6 +17,7 @@ class Cloudformation(BaseResponseHandler):
         return BaseResponseHandler.on_execution(self, event)
 
     def on_exception(self, ex):
+        logging.exception(ex.message)
         send_signal(self.event, FAILED, ex.message)
         BaseResponseHandler.on_exception(self, ex)
 

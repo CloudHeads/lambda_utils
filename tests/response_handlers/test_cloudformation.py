@@ -7,7 +7,7 @@ from mock import patch
 
 from lambda_utils import LambdaProcessor
 from lambda_utils.response_handlers import cloudformation as module
-from lambda_utils.response_handlers.cloudformation import Cloudformation, FAILED, send_signal
+from lambda_utils.response_handlers.cloudformation import Cloudformation, FAILED, send_signal, logging
 
 
 @fixture
@@ -38,6 +38,14 @@ class TestCloudformation:
 
         assert_that(result, equal_to(event))
         assert_that(cloudformation.event, equal_to(event))
+
+    @patch.object(logging, 'exception')
+    def test_on_exception_calls_logging_exception(self, exception_mock):
+        ex = Exception()
+
+        Cloudformation().on_exception(ex=ex)
+
+        exception_mock.assert_called_once_with(ex.message)
 
     @patch.object(module, 'send_signal')
     def test_on_exception_failed_signal_is_send(self, send_signal_mock, event):

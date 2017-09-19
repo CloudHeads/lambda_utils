@@ -1,7 +1,10 @@
-from lambda_utils.response_handlers import BaseResponseHandler
-from concurrent.futures import TimeoutError
 import json
+import logging
 import urlparse
+
+from concurrent.futures import TimeoutError
+
+from lambda_utils.response_handlers import BaseResponseHandler
 
 
 class ApiGateway(BaseResponseHandler):
@@ -10,6 +13,7 @@ class ApiGateway(BaseResponseHandler):
         return event
 
     def on_exception(self, ex):
+        logging.exception(ex.message)
         if type(ex) == TimeoutError:
             return http_response("Execution is about to timeout.", status=504)
         else:
