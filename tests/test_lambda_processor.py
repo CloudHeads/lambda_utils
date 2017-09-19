@@ -145,10 +145,3 @@ class TestSecondsUntilTimeout:
         result = LambdaProcessor().seconds_until_timeout(context)
 
         assert_that(result, equal_to(4.0))
-
-    @patch.object(logging, 'debug')
-    def test_returns_none(self, debug_mock):
-        result = LambdaProcessor().seconds_until_timeout(None)
-
-        assert_that(result, equal_to(None))
-        debug_mock.assert_called_once_with('Add logging on timeout failed. context.get_remaining_time_in_millis() missing?')
