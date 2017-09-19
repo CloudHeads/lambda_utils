@@ -13,7 +13,8 @@ except ImportError:
 
 class ApiGateway(BaseResponseHandler):
     def on_execution(self, event):
-        event['body'] = extract_body(event)
+        if type(event) is dict:
+            event['body'] = extract_body(event)
         return event
 
     def on_exception(self, ex):

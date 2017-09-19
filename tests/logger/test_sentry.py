@@ -46,6 +46,12 @@ class TestSentry:
 
         client_mock.user_context.assert_called_once_with({'key': 'value'})
 
+    @patch.object(logging, 'debug')
+    def test_add_user_context_with_none_event(self, debug_mock, event):
+        Sentry().add_user_context(None)
+
+        debug_mock.assert_called_once()
+
     @patch.object(module.Sentry, 'client')
     def test_add_x_ray_tags_adds_requester_trace_id(self, client_mock, event, x_amzn_trace_id):
         Sentry().add_x_ray_tags(event)

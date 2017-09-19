@@ -29,7 +29,7 @@ class Sentry(BaseLogger):
             for key, value in event['requestContext']['authorizer'].items():
                 user_context[key.lower()] = value
             self.client.user_context(user_context)
-        except KeyError:
+        except (KeyError, TypeError):
             logging.debug("No user  context recognized in event['requestContext']['authorizer']")
 
     def add_x_ray_tags(self, event):
