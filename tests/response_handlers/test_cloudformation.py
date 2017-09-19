@@ -61,10 +61,8 @@ class TestCloudformation:
         def function(event, context):
             raise exception
 
-        with pytest.raises(Exception) as ex:
-            function(event, None)
+        function(event, None)
 
-        assert_that(ex.value, equal_to(exception))
         send_signal_mock.assert_called_once_with(event, FAILED, "some_exception")
 
     @patch.object(module, 'Request')
@@ -78,10 +76,8 @@ class TestCloudformation:
         def function(event, context):
             raise exception
 
-        with pytest.raises(Exception) as ex:
-            function(sns_event, None)
+        function(sns_event, None)
 
-        assert_that(ex.value, equal_to(exception))
         build_opener_mock.assert_called_once_with(http_handler_mock)
         request_mock.assert_called_once_with(event['ResponseURL'], data=response_body)
         build_opener_mock.return_value.open.assert_called_once_with(request_mock.return_value)
