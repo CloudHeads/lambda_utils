@@ -7,7 +7,7 @@ class BaseResponseHandler:
         return event
 
     def on_exception(self, ex):
-        logging.exception(ex.message)
+        logging.exception(str(ex))
         raise
 
     def on_response(self, response):

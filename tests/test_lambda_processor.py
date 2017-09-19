@@ -124,6 +124,7 @@ class TestOnFunctions:
             function(None, None)
 
         assert_that(ex.value, equal_to(exception))
+        exception_mock.assert_called_once_with(str(exception))
 
     @patch.object(BaseResponseHandler, 'on_exception')
     def test_on_exception_forward_exception(self, on_exception_mock, exception):
