@@ -35,7 +35,7 @@ class TestApiGateway:
 
         ApiGateway().on_exception(ex=ex)
 
-        exception_mock.assert_called_once_with(ex.message)
+        exception_mock.assert_called_once_with(str(ex))
 
 
 class TestExtractBody:
