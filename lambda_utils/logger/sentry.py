@@ -42,5 +42,5 @@ class Sentry(BaseLogger):
                 for trace_id in request_trace_id.split(';'):
                     if 'Root' in trace_id or 'root' in trace_id:
                         self.client.tags_context({os.environ.get('SourceTraceId', 'Request-X-Amzn-Trace-Id'): trace_id})
-        except KeyError:
+        except (KeyError, AttributeError):
             logging.debug("No request x-ray-trace-id recognized in event[u'headers'][u'X-Amzn-Trace-Id']")

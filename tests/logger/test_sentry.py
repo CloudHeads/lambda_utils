@@ -1,6 +1,5 @@
-import os
-
 import logging
+import os
 import uuid
 
 from hamcrest import assert_that, equal_to
@@ -62,5 +61,12 @@ class TestSentry:
     @patch.object(module.Sentry, 'client')
     def test_add_x_ray_tags_adds_lambda_trace_id(self, client_mock):
         Sentry().add_x_ray_tags({})
+
+        client_mock.tags_context.assert_called_once_with({'X-Amzn-Trace-Id': 'some_id'})
+
+    @patch.dict(os.environ, {'_X_AMZN_TRACE_ID': 'some_id'})
+    @patch.object(module.Sentry, 'client')
+    def test_add_x_ray_tags_with_none_event(self, client_mock):
+        Sentry().add_x_ray_tags(None)
 
         client_mock.tags_context.assert_called_once_with({'X-Amzn-Trace-Id': 'some_id'})
