@@ -51,8 +51,8 @@ def redirect_to(url, status=302):
 def extract_body(event):
     def content_type():
         headers = event.get('headers', {})
-        for key in ['Content-Type', 'content-type']:
-            if key in headers:
+        for key in headers:
+            if key.lower() == 'content-type':
                 return headers[key]
         return ''
 
